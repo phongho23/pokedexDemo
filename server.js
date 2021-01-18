@@ -2,7 +2,6 @@ require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const helmet = require('helmet')
-//always place helmet before cors in the pipeline
 const cors = require('cors')
 const POKEDEX = require('./pokedex.json')
 
@@ -20,7 +19,6 @@ app.use(function validateBearerToken(req, res, next) {
     if (!authToken || authToken.split(' ')[1] !== apiToken) {
         return res.status(401).json({ error: 'Unauthorized request' })
     }
-    // move to the next middleware
     next()
 })
 
@@ -41,7 +39,6 @@ app.get('/pokemon', function handleGetPokemon(req, res) {
         )
     }
 
-    // filter our pokemon by type if type query param is present
     if (req.query.type) {
         response = response.filter(pokemon =>
             pokemon.type.includes(req.query.type)
