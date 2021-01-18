@@ -31,10 +31,8 @@ app.get('/types', function handleGetTypes(req, res) {
 app.get('/pokemon', function handleGetPokemon(req, res) {
     let response = POKEDEX.pokemon;
 
-    // filter our pokemon by name if name query param is present
     if (req.query.name) {
         response = response.filter(pokemon =>
-            // case insensitive searching
             pokemon.name.toLowerCase().includes(req.query.name.toLowerCase())
         )
     }
@@ -45,23 +43,13 @@ app.get('/pokemon', function handleGetPokemon(req, res) {
         )
     }
 
-    app.use((error, req, res, next) => {
-        let response
-        if (process.env.NODE_ENV === 'production') {
-            response = { error: { message: 'server error' } }
-        } else {
-            response = { error }
-        }
-        res.status(500).json(response)
-    })
-
-
-    res.status(500).json(response)
+    res.json(response)
 })
 
 const PORT = process.env.PORT || 8000
 
 app.listen(PORT, () => {
+    console.log(`Server listening at http://localhost:${PORT}`)
 })
 
 
